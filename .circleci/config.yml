@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: circleci/golang:1.14
+      - image: circleci/golang:1.14.7
     steps:
       - checkout
       - run:
@@ -19,12 +19,19 @@ jobs:
           name: Build (mac)
           command: |
             GOOS=darwin make EXE_NAME=httpie-go_darwin_amd64
+      - run:
+          name: Build (win)
+          command: |
+            GOOS=windows make EXE_NAME=httpie-go_windows_amd64.exe
       - store_artifacts:
           path: ~/project/httpie-go_linux_amd64
           destination: bin/httpie-go_linux_amd64
       - store_artifacts:
           path: ~/project/httpie-go_darwin_amd64
           destination: bin/httpie-go_darwin_amd64
+      - store_artifacts:
+          path: ~/project/httpie-go_windows_amd64.exe
+          destination: bin/httpie-go_windows_amd64.exe
 workflows:
   version: 2
   build_and_test:
